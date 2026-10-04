@@ -17,19 +17,21 @@ java {
 }
 
 dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.3')
     testImplementation 'net.serenity-bdd:serenity-core:4.2.34'
     testImplementation 'net.serenity-bdd:serenity-cucumber:4.2.34'
     testImplementation 'net.serenity-bdd:serenity-screenplay:4.2.34'
     testImplementation 'net.serenity-bdd:serenity-screenplay-webdriver:4.2.34'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.22.2'
-    testImplementation 'org.junit.platform:junit-platform-suite:1.11.4'
+    testImplementation 'org.junit.platform:junit-platform-suite'
 }
+
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
     maxParallelForks = 1
     systemProperty 'cucumber.execution.parallel.enabled',
-            providers.gradleProperty('cucumberParallel').getOrElse('false')
+            providers.gradleProperty('cucumberParallel').getOrElse('true')
     systemProperty 'cucumber.execution.parallel.config.strategy', 'fixed'
     systemProperty 'cucumber.execution.parallel.config.fixed.parallelism',
             providers.gradleProperty('cucumberParallelism').getOrElse('1')

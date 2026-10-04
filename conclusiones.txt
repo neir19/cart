@@ -1,0 +1,51 @@
+CONCLUSIONES DEL EJERCICIO
+==========================
+
+Alcance
+-------
+La automatizacion cubre un flujo de compra de OpenCart como invitado. El
+escenario elige aleatoriamente 2, 3 o 4 categorias disponibles, agrega un
+producto de cada categoria al carrito e intenta finalizar el pedido. La
+confirmacion se consulta mediante una Question de Screenplay y se valida en el
+Step Definition.
+
+Hallazgos en el codigo
+----------------------
+- El proyecto separa el flujo entre feature, Step Definitions, Tasks,
+  Interactions, Questions y Targets. Esto permite identificar la intencion del
+  escenario y centralizar locators en `PaginaOpenCart`.
+- La cantidad de categorias se comprueba antes de empezar a agregarlas. El
+  producto y las categorias se eligen al azar, por lo que los productos y las
+  rutas concretas pueden variar entre ejecuciones.
+- `AgregarProductoAleatorioDeCategoria` combina tareas Screenplay con acceso
+  directo al WebDriver y contiene una espera cuyo error se ignora. Esto reduce
+  la claridad del flujo cuando falla la interaccion y es un punto a revisar al
+  estabilizar la automatizacion.
+
+Resultados de la ultima ejecucion disponible
+---------------------------------------------
+El XML `build/test-results/test/TEST-Ejemplos.xml` registra una ejecucion con
+fecha 2026-10-04T22:24:57Z (17:24:57 hora local), duracion de 46.34 segundos,
+3 casos, 3 aprobados, 0 fallidos, 0 errores y 0 omitidos. Por lo tanto, los
+tres ejemplos del Esquema del escenario finalizaron correctamente en esta
+ejecucion.
+
+El resumen `target/site/serenity/summary.txt`, generado a las 17:26:04, muestra
+cero escenarios y cero casos de prueba. Esto no concuerda con el XML de Gradle
+que registra los tres casos aprobados; para conocer el resultado de esta
+ejecucion se toma como referencia el XML de JUnit y queda pendiente investigar
+la discrepancia en el resumen Serenity.
+
+Durante la ejecucion Selenium tambien registro advertencias de que no encontro
+una implementacion CDP para la version 154 de Chrome. Las advertencias no
+impidieron que los tres casos terminaran aprobados, aunque conviene revisar la
+compatibilidad del driver/dependencias si se presentan problemas con Chrome en
+ejecuciones futuras.
+
+Conclusiones y siguientes pasos
+-------------------------------
+La ultima ejecucion disponible demuestra que los tres ejemplos del flujo de
+compra pasaron segun Gradle. Sin embargo, la diferencia entre el resultado de
+Gradle y el resumen de Serenity debe resolverse para que los reportes presenten
+una vista coherente de la ejecucion. Las advertencias de CDP son informativas
+en esta corrida, pero merecen seguimiento ante cambios de Chrome o Selenium.

@@ -121,7 +121,5 @@ public class FinalizarCompraComoInvitado implements Task {
         actor.attemptsTo(
                 WaitUntil.the(PaginaOpenCart.MENSAJE_CONFIRMACION_COMPRA, isVisible())
         );
-
-
     }
 }

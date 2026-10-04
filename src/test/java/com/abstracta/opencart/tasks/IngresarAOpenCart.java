@@ -17,7 +17,7 @@ public class IngresarAOpenCart implements Task {
     @Override
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
-                Open.url(PaginaOpenCart.URL),
+                Open.url("https://opencart.abstracta.us/"),
                 WaitUntil.the(PaginaOpenCart.LOGO, isVisible()));
     }
 }

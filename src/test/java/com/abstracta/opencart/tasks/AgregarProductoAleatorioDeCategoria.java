@@ -46,6 +46,20 @@ public class AgregarProductoAleatorioDeCategoria implements Task {
                     SeleccionarCategoriaEnMenu.categoria(categoria),
                     WaitUntil.the(PaginaOpenCart.TITULO_CATEGORIA, isVisible()),
                     IntentarAgregarProductoDesdeCategoria.producto(producto.identificador()));
+            
+            org.openqa.selenium.WebDriver driver = net.serenitybdd.screenplay.abilities.BrowseTheWeb.as(actor).getDriver();
+            if (driver.getCurrentUrl().contains("route=product/product")) {
+                actor.attemptsTo(com.abstracta.opencart.interactions.ValidarDataProducto.agregar().newInstance());
+                try {
+                    new org.openqa.selenium.support.ui.WebDriverWait(driver, java.time.Duration.ofSeconds(10)).until(navegador ->
+                            net.serenitybdd.screenplay.abilities.BrowseTheWeb.as(actor)
+                                    .findAll(PaginaOpenCart.ALERTA_PRODUCTO_AGREGADO).stream()
+                                    .anyMatch(org.openqa.selenium.WebElement::isDisplayed));
+                } catch (Exception e) {
+                    // Ignore, let ProductoAgregadoExitosamente handle it
+                }
+            }
+
             if (actor.asksFor(ProductoAgregadoExitosamente.enLaCategoria())) {
                 return;
             }

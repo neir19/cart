@@ -18,10 +18,15 @@ public class ValidarDataProducto  implements Interaction {
                 .resolveAllFor(actor).stream()
                 .anyMatch(WebElementFacade::isVisible)) {
             actor.attemptsTo(LlenarFormularioCinema.ahora());
+            actor.attemptsTo(Click.on(PaginaOpenCart.ADDCARRITO));
         } else if (PaginaOpenCart.TITULO_PRODUCTO.of("Canon EOS 5D")
                 .resolveAllFor(actor).stream()
                 .anyMatch(WebElementFacade::isVisible)) {
             actor.attemptsTo(AgregarCanonEOS.agregar().newInstance());
+        } else if (PaginaOpenCart.TITULO_PRODUCTO.of("Product 8")
+                .resolveAllFor(actor).stream()
+                .anyMatch(WebElementFacade::isVisible)) {
+            actor.attemptsTo(AgregarProduct8.agregar().newInstance());
         } else if (PaginaOpenCart.TITULO_PRODUCTO.of("Nikon D300")
                 .resolveAllFor(actor).stream()
                 .anyMatch(WebElementFacade::isVisible)) {
@@ -30,6 +35,8 @@ public class ValidarDataProducto  implements Interaction {
                 .resolveAllFor(actor).stream()
                 .anyMatch(WebElementFacade::isVisible)) {
             actor.attemptsTo(AgregarNikinD.agregar().newInstance());
+        } else {
+            actor.attemptsTo(Click.on(PaginaOpenCart.ADDCARRITO));
         }
     }
 

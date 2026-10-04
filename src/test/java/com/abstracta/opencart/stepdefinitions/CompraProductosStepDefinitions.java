@@ -1,18 +1,19 @@
 package com.abstracta.opencart.stepdefinitions;
 
-i
 import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import io.cucumber.java.es.Cuando;
 import io.cucumber.java.es.Dado;
+import io.cucumber.java.es.Cuando;
 import io.cucumber.java.es.Entonces;
-import net.serenitybdd.screenplay.Actor;
+import com.abstracta.opencart.questions.CompraConfirmada;
+import com.abstracta.opencart.tasks.AgregarProductosDeCategoriasAleatorias;
+import com.abstracta.opencart.tasks.DesplegarCarrito;
+import com.abstracta.opencart.tasks.FinalizarCompraComoInvitado;
+import com.abstracta.opencart.tasks.IngresarAOpenCart;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
-import static org.hamcrest.Matchers.greaterThan;
+import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
+import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static org.hamcrest.Matchers.is;
 
 public class CompraProductosStepDefinitions {
@@ -25,13 +26,17 @@ public class CompraProductosStepDefinitions {
 
     @Dado("que el cliente ingresa a la página de OpenCart")
     public void elClienteIngresaAOpenCart() {
-        OnStage.theActorInTheSpotlight().attemptsTo(IngresarAOpenCart.ahora());
+
+        theActorCalled("Actor").wasAbleTo(
+                IngresarAOpenCart.ahora()
+        );
+        //OnStage.theActorInTheSpotlight().attemptsTo(IngresarAOpenCart.ahora());
 
     }
 
     @Cuando("selecciona aleatoriamente {int} categorías disponibles y agrega un producto de cada una al carrito")
     public void agregaProductosDeCategoriasAleatorias(int cantidad) {
-        OnStage.theActorInTheSpotlight()
+        theActorInTheSpotlight()
                 .attemptsTo(
                         AgregarProductosDeCategoriasAleatorias.cantidad(cantidad),
                         DesplegarCarrito.desdeLaCabecera());
@@ -40,13 +45,13 @@ public class CompraProductosStepDefinitions {
 
     @Cuando("finaliza la compra")
     public void finalizaLaCompra() {
-        OnStage.theActorInTheSpotlight()
+        theActorInTheSpotlight()
                 .attemptsTo(FinalizarCompraComoInvitado.ahora());
     }
 
     @Entonces("debe visualizar el mensaje de confirmación de compra exitosa")
     public void visualizaConfirmacionDeCompraExitosa() {
-        OnStage.theActorInTheSpotlight().should(
+        theActorInTheSpotlight().should(
                 seeThat(CompraConfirmada.exitosamente(), is(true)));
     }
 }
