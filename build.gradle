@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.34'
+}
+
+group = 'com.abstracta.opencart'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    testImplementation 'net.serenity-bdd:serenity-core:4.2.34'
+    testImplementation 'net.serenity-bdd:serenity-cucumber:4.2.34'
+    testImplementation 'net.serenity-bdd:serenity-screenplay:4.2.34'
+    testImplementation 'net.serenity-bdd:serenity-screenplay-webdriver:4.2.34'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.22.2'
+    testImplementation 'org.junit.platform:junit-platform-suite:1.11.4'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxParallelForks = 1
+    systemProperty 'cucumber.execution.parallel.enabled',
+            providers.gradleProperty('cucumberParallel').getOrElse('false')
+    systemProperty 'cucumber.execution.parallel.config.strategy', 'fixed'
+    systemProperty 'cucumber.execution.parallel.config.fixed.parallelism',
+            providers.gradleProperty('cucumberParallelism').getOrElse('1')
+    systemProperty 'serenity.project.name', 'OpenCart - compras automatizadas'
+    finalizedBy tasks.named('aggregate')
+}
+
+tasks.named('aggregate') {
+    outputs.upToDateWhen { false }
+}
+
+serenity {
+    reports = ['single-page-html']
+}
